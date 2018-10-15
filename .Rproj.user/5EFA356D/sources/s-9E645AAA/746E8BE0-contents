@@ -1,0 +1,5 @@
+AOI = AOI::getAOI("Grand Canyon") %>% 
+  find() %>% 
+  write(file = '/Users/mikejohnson/Documents/GitHub/nwmRetro/data/test.gpkg')
+
+plot(AOI)
