@@ -11,4 +11,4 @@ AOI = AOI::getAOI("Grand Canyon") %>%
 To Do:
 
 - [ ] Add data files
-- [ ] Create a join function that attacahes data files to 'find' files before writingnus
+- [ ] Create a join function that attacahes data files to 'find' files before writing
