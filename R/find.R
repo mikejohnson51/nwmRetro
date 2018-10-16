@@ -15,7 +15,7 @@
 #' @export
 
 
-find = function(AOI, type = "flowlines", spatial = TRUE){
+find = function(AOI, type = "flowlines", spatial = FALSE){
 
 df = data.frame(server = c(rep("WBD", 2),
                            rep("nhdplus", 3)),
