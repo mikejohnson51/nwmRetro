@@ -3,6 +3,7 @@
 export("%>%")
 export(find)
 export(getExtension)
+export(join)
 export(write)
 importFrom(magrittr,"%>%")
 importFrom(sf,as_Spatial)
