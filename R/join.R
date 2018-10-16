@@ -1,12 +1,15 @@
 #' @title Join nwmRetro data to NHD object
-#' @description Joins the retrospective averages to an input NHD object and computes the seasoal and monthly averages.
+#' @description Joins the retrospective averages to an input NHD object and computes the seasoal, annual and monthly averages.
 #' @param obj a NHD object with a COMID attribute
-#' @return a simple featurs (sf) object
+#' @return a simple features (sf) object
 #' @export
 #' @author Mike Johnson
 
+join = function(obj = NULL){
 
-join = function(obj){
+  sp = any(grep("Spatial", class(obj)))
+
+  if(sp) { obj = sf::st_as_sf(obj)}
 
   ids = obj$comid
 
@@ -22,11 +25,11 @@ join = function(obj){
   retro$summer = rowMeans(retro[,c(7,8,9)])
   retro$winter = rowMeans(retro[,c(13,2,3)])
 
-  obj.new  = merge(obj, retro, by.x = "comid", by.y = 'COMID')
-
-  obj.new <- sf::st_as_sf(obj.new)
+  obj.new  = merge(obj, retro, by.x = "comid", by.y = 'COMID', all.x = TRUE)
 
   cat(crayon::cyan("NWM retro and NHD merged successful!\n"))
+
+  if(sp){ obj.new = sf::as_Spatial(obj.new)}
 
   return(obj.new)
 

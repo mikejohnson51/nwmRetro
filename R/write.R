@@ -19,7 +19,9 @@
 
 write = function(obj, file = stop("'file' must be specified"), layer = NULL){
 
-  if(any(grep("Spatial", class(obj)))) { obj = sf::st_as_sf(obj)}
+  sp = any(grep("Spatial", class(obj)))
+
+  if(sp) { obj = sf::st_as_sf(obj)}
 
   good.ext = c('shp', 'csv', 'gpkg', 'geojson', 'sqlite', 'xlsx', 'rda')
 
@@ -47,6 +49,8 @@ write = function(obj, file = stop("'file' must be specified"), layer = NULL){
   `%+%` = crayon::`%+%`
 
   cat(crayon::yellow(ext, 'file successfully written!'))
+
+  if(sp){ obj = sf::as_Spatial(obj)}
 
   return(obj)
 
