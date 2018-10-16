@@ -3,32 +3,39 @@
 \docType{data}
 \name{nwm_averages}
 \alias{nwm_averages}
-\title{Long term monthly averages for all NHD streams}
-\format{A data frame with 2698770 rows and 14 variables:
-\describe{
-  \item{COMID}{A unique common identifier for each reach}
-  \item{Jan}{23-year average flow in January}
-  \item{Feb}{23-year average flow in February}
-  \item{Mar}{23-year average flow in March}
-  \item{Apr}{23-year average flow in April}
-  \item{May}{23-year average flow in May}
-  \item{Jun}{23-year average flow in June}
-  \item{Jul}{23-year average flow in July}
-  \item{Aug}{23-year average flow in August}
-  \item{Sep}{23-year average flow in September}
-  \item{Oct}{23-year average flow in October}
-  \item{Nov}{23-year average flow in November}
-  \item{Dec}{23-year average flow in December}
-  ...
+\title{Long term NWM retrospective monthly averages for all NHD reaches}
+\format{A data.frame with 2,698,770 rows and 14 variables:
+\itemize{
+  \item COMID    A unique common identifier for each reach
+  \item tz_index A index representing USA timezone
+  \item Jan      23-year average flow in January
+  \item Feb      23-year average flow in February
+  \item Mar      23-year average flow in March
+  \item Apr      23-year average flow in April
+  \item May      23-year average flow in May
+  \item Jun      23-year average flow in June
+  \item Jul      23-year average flow in July
+  \item Aug      23-year average flow in August
+  \item Sep      23-year average flow in September
+  \item Oct      23-year average flow in October
+  \item Nov      23-year average flow in November
+  \item Dec      23-year average flow in December
 }}
 \source{
-\url{}
+\url{https://ral.ucar.edu}
+
+\url{http://water.noaa.gov}
 }
 \usage{
 nwm_averages
 }
 \description{
-A dataset containing a 23-year run of of the National Water Model version 1.0
-provided by NCAR and OWP
+Dataset containing a 23-year run of of the National Water Model version 1.0
+}
+\examples{
+\dontrun{
+ nwmRetro::nwm_averges
+}
+
 }
 \keyword{datasets}
