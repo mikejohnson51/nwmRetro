@@ -8,7 +8,7 @@ i = 1
 plot(obj$annual, type = 'l', lwd = wvec[i], lty = lvec[i], col = cvec[i],
      bty='l', main = "NHD annual flow volume vs. NWM 1.0: Colorado Springs COMIDs", xlab = 'COMID Index', ylab = 'Flow (cfs)')
 i = i + 1
-lines(obj$q0001a / 5, type = 'l', lwd = wvec[i], lty = lvec[i], col = cvec[i])
+lines(obj$q0001a / 10, type = 'l', lwd = wvec[i], lty = lvec[i], col = cvec[i])
 
 ## q0001a is fow from runoff in cfs
 }
