@@ -22,11 +22,13 @@ join = function(obj){
   retro$summer = rowMeans(retro[,c(7,8,9)])
   retro$winter = rowMeans(retro[,c(13,2,3)])
 
-  obj  = merge(obj, retro, by.x = "comid", by.y = 'COMID')
+  obj.new  = merge(obj, retro, by.x = "comid", by.y = 'COMID')
 
+  obj.new <- sf::st_as_sf(obj.new)
 
   cat(crayon::cyan("NWM retro and NHD merged successful!\n"))
 
-  return(obj)
+  return(obj.new)
 
 }
+
