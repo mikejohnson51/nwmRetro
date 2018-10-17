@@ -7,15 +7,18 @@
 #'   \item seasonal
 #'   \item monthly
 #' }
+#' @param stream_name A character string specifing what stream to graph (should match a
+#' valid `gnis_name` in `obj`). \code{NA} (default) will plot all reaches.
 #' @return a ggplot graph
+#' @examples show(obj = obj)
+#' @examples show(obj = obj, stream_name = "Fountain Creek", type = "seasonal")
 #' @export
 #' @author Pat Johnson
 
 
-show <- function(obj = NULL, type = "annual") {
+show <- function(obj = NULL, type = "annual", stream_name = NA) {
 
   data <- as.data.frame(obj)
-  data$idu <- as.numeric(row.names(obj))
 
   if(type == "annual") {
     cols <- c("annual", "q0001a")
@@ -29,6 +32,18 @@ show <- function(obj = NULL, type = "annual") {
     cols <- month.abb
     pal = "Set3"
   }
+
+  if (!is.na(stream_name)) {
+
+    if (!stream_name %in% data$gnis_name) {
+      stop(paste(stream_name, "not found in object `obj`" ))
+    }
+
+    data <- data %>%
+      filter(gnis_name == stream_name)
+  }
+
+  data$idu <- as.numeric(row.names(data))
 
   test <- data %>%
     select(idu, cols) %>%

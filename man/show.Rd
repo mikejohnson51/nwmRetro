@@ -4,7 +4,7 @@
 \alias{show}
 \title{Graph joined spatial and NWM data}
 \usage{
-show(obj = NULL, type = "annual")
+show(obj = NULL, type = "annual", stream_name = NA)
 }
 \arguments{
 \item{obj}{A spatial object from \code{nwmRetro::join()}}
@@ -15,12 +15,19 @@ show(obj = NULL, type = "annual")
   \item seasonal
   \item monthly
 }}
+
+\item{stream_name}{A character string specifing what stream to graph (should match a
+valid `gnis_name` in `obj`). \code{NA} (default) will plot all reaches.}
 }
 \value{
 a ggplot graph
 }
 \description{
 Returns a visualization of the resulting object from \code{nwmRetro::join()}
+}
+\examples{
+show(obj = obj)
+show(obj = obj, stream_name = "Fountain Creek", type = "seasonal")
 }
 \author{
 Pat Johnson
