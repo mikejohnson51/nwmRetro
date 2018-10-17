@@ -18,8 +18,7 @@
 
 show <- function(obj = NULL, type = "annual", stream_name = NA) {
 
-  data <- as.data.frame(obj)
-
+  # Define color pallete and columns based on type
   if(type == "annual") {
     cols <- c("annual", "q0001a")
     pal = "Set1"
@@ -33,6 +32,10 @@ show <- function(obj = NULL, type = "annual", stream_name = NA) {
     pal = "Set3"
   }
 
+  # Create data frame
+  data <- as.data.frame(obj)
+
+  # Limit data if stream_name specified
   if (!is.na(stream_name)) {
 
     if (!stream_name %in% data$gnis_name) {
@@ -43,12 +46,15 @@ show <- function(obj = NULL, type = "annual", stream_name = NA) {
       filter(gnis_name == stream_name)
   }
 
-  data$idu <- as.numeric(row.names(data))
-
+  # Create graph
   graph <- data %>%
-    select(idu, cols) %>%
-    tidyr::gather(key, value, cols) %>%
-    ggplot(aes(x=idu, y=value, colour=key)) +
+    select(cols) %>%
+    reshape(direction="long",
+            varying = cols,
+            v.names="value",
+            timevar="key",
+            times=cols) %>%
+    ggplot(aes(x=id, y=value, colour=key)) +
     geom_line() +
     xlab("COMID Index") +
     ylab("Flow (cfs)")
