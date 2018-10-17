@@ -15,9 +15,6 @@ for (file in fileList) {
     inner_join(fst::read.fst(paste0("./data-raw/",file)), by = "COMID")
 }
 
-# Define timezones
-timezones <- sort(unique(nwm_retro$tz))
-
 # Get offset for a specific timezone region
 t_offset <- function(tz) {
   res = c()
@@ -28,13 +25,19 @@ t_offset <- function(tz) {
   return(as.numeric(res))
 }
 
+# Define timezones
+timezone_names <- sort(unique(nwm_retro$tz))
+tz_index <- t_offset(timezone_names)
+
+timezones <- data.frame(timezones = timezone_names, tz_index)
+devtools::use_data(timezones)
+
 nwm_averages <- nwm_retro %>%
-  mutate_at(vars(one_of(month.abb)), round, 1) %>%
-  mutate_at(vars(one_of(month.abb)), funs(. * 10)) %>%
-  mutate(tz_index = match(tz,timezones)) %>%
+  mutate_at(vars(one_of(month.abb)), funs(round(.,1) * 10)) %>%
+  mutate(tz_index = match(tz,timezone_names)) %>%
   select(-lat, -long, -tz) %>%
   mutate_all(funs(as.integer(.)))
 
 
 
-devtools::use_data(nwm_averages, compress = "xz")
+devtools::use_data(nwm_averages, compress = "xz", internal = TRUE)

@@ -4,7 +4,7 @@
 \alias{find}
 \title{Find Spatial NHD or WBD data}
 \usage{
-find(AOI, type = "flowlines", spatial = TRUE)
+find(AOI, type = "flowlines", spatial = FALSE)
 }
 \arguments{
 \item{AOI}{a Spatial Object}
