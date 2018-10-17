@@ -16,5 +16,5 @@ a simple features (sf) object
 Joins the retrospective averages to an input NHD object and computes the seasoal, annual and monthly averages.
 }
 \author{
-Mike Johnson
+Mike Johnson and Pat Johnson
 }

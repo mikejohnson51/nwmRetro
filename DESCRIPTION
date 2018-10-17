@@ -12,6 +12,7 @@ Depends:
     R(>= 3.3.0)
 Imports:
 	crayon,
+	dplyr,
 	magrittr,
 	sf
 License: MIT + file LICENSE
