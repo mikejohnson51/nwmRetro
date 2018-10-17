@@ -13,8 +13,10 @@ Depends:
 Imports:
 	crayon,
 	dplyr,
+	ggplot2,
 	magrittr,
-	sf
+	sf,
+	tidyr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
