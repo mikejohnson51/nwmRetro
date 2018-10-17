@@ -20,7 +20,7 @@ show <- function(obj = NULL, type = "annual", stream_name = NA) {
 
   # Define color pallete and columns based on type
   if(type == "annual") {
-    cols <- c("annual", "q0001a")
+    cols <- c("annual", "q0001e")
     pal = "Set1"
   }
   else if (type == "seasonal") {
