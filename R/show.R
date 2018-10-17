@@ -45,7 +45,7 @@ show <- function(obj = NULL, type = "annual", stream_name = NA) {
 
   data$idu <- as.numeric(row.names(data))
 
-  test <- data %>%
+  graph <- data %>%
     select(idu, cols) %>%
     tidyr::gather(key, value, cols) %>%
     ggplot(aes(x=idu, y=value, colour=key)) +
@@ -53,7 +53,7 @@ show <- function(obj = NULL, type = "annual", stream_name = NA) {
     xlab("COMID Index") +
     ylab("Flow (cfs)")
 
-  graph <- test + scale_colour_brewer(palette = pal)
+  graph <- graph + scale_colour_brewer(palette = pal)
 
   return(graph)
 
