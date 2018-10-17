@@ -12,6 +12,11 @@ Depends:
     R(>= 3.3.0)
 Imports:
 	crayon,
+<<<<<<< HEAD
+=======
+	dplyr,
+	ggplot2,
+>>>>>>> cabb7542fda948e253be880263e733cc398e4e85
 	magrittr,
 	sf
 License: MIT + file LICENSE

@@ -3,6 +3,15 @@ cvec <- RColorBrewer::brewer.pal(12, 'Paired')
 lvec <- 1:12
 wvec = seq(3, 1, -.25)
 
+<<<<<<< HEAD
+=======
+obj = AOI::getAOI("Colorado Springs") %>%
+  find() %>%
+  join()
+
+
+
+>>>>>>> cabb7542fda948e253be880263e733cc398e4e85
 {
 i = 1
 plot(obj$annual, type = 'l', lwd = wvec[i], lty = lvec[i], col = cvec[i],

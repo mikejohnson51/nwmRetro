@@ -15,7 +15,11 @@ obj = AOI::getAOI("Colorado Springs") %>%
 })
 
 user  system    elapsed 
+<<<<<<< HEAD
 0.546   0.070   2.523 
+=======
+1.009   0.153   3.670  
+>>>>>>> cabb7542fda948e253be880263e733cc398e4e85
 
 ```
 
