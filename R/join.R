@@ -48,7 +48,7 @@ join = function(obj = NULL){
   for (season in names(seasons)) {
     months = eval(parse(text = paste0('seasons$', season)))
     retro <- retro %>%
-      mutate(!!season := rowMeans(select(., one_of(months)), na.rm = TRUE)) %>%
+      mutate(!!season := rowSums(select(., one_of(months)), na.rm = TRUE)) %>%
       mutate_at(vars(season), round, 2)
   }
 
