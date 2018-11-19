@@ -4,11 +4,7 @@
 \alias{find}
 \title{Find Spatial NHD or WBD data}
 \usage{
-<<<<<<< HEAD
-find(AOI, type = "flowlines", spatial = TRUE)
-=======
 find(AOI, type = "flowlines", spatial = FALSE)
->>>>>>> cabb7542fda948e253be880263e733cc398e4e85
 }
 \arguments{
 \item{AOI}{a Spatial Object}

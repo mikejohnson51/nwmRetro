@@ -4,25 +4,12 @@
 \alias{join}
 \title{Join nwmRetro data to NHD object}
 \usage{
-<<<<<<< HEAD
-join(obj)
-=======
 join(obj = NULL)
->>>>>>> cabb7542fda948e253be880263e733cc398e4e85
 }
 \arguments{
 \item{obj}{a NHD object with a COMID attribute}
 }
 \value{
-<<<<<<< HEAD
-a simple featurs (sf) object
-}
-\description{
-Joins the retrospective averages to an input NHD object and computes the seasoal and monthly averages.
-}
-\author{
-Mike Johnson
-=======
 a simple features (sf) object
 }
 \description{
@@ -30,5 +17,4 @@ Joins the retrospective averages to an input NHD object and computes the seasoal
 }
 \author{
 Mike Johnson and Pat Johnson
->>>>>>> cabb7542fda948e253be880263e733cc398e4e85
 }

@@ -4,9 +4,6 @@ export("%>%")
 export(find)
 export(getExtension)
 export(join)
-<<<<<<< HEAD
-export(write)
-=======
 export(show)
 export(write)
 importFrom(dplyr,filter)
@@ -22,7 +19,6 @@ importFrom(ggplot2,ggplot)
 importFrom(ggplot2,scale_colour_brewer)
 importFrom(ggplot2,xlab)
 importFrom(ggplot2,ylab)
->>>>>>> cabb7542fda948e253be880263e733cc398e4e85
 importFrom(magrittr,"%>%")
 importFrom(sf,as_Spatial)
 importFrom(sf,read_sf)
