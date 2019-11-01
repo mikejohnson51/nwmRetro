@@ -33,11 +33,6 @@ env:
 
 r_github_packages:
   - jimhester/covr
-  - r-spatial/lwgeom
-
-
-after_success:
-   - Rscript -e 'covr::coveralls()'
 
 notifications:
   email:
