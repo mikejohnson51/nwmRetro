@@ -1,5 +1,7 @@
 # nwmRetro
 
+[![Build Status](https://travis-ci.org/mikejohnson51/nwmRetro.svg?branch=master)](https://travis-ci.org/mikejohnson51/nwmRetro)
+
 This package is part of a working paper that compiles estimate flow volumes from the NWM retrospective v1.0 run at the NHD reach level. This package contains functionalites for  getting NHD subsets from the USGS WCS, joining the nwmRetro stats to that file, and writing it to disk in a number of formats. 
 
 Future work will look at updating this dataset to the NWM retrospective v1.2 as well as including veleocity estimates.
