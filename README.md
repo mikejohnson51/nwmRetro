@@ -9,16 +9,10 @@ Future work will look at updating this dataset to the NWM retrospective v1.2 as 
 ## Basic Starting example
 
 ```r
-system.time({
+
 obj = AOI::getAOI("Colorado Springs") %>% 
-  find() %>% 
-  join() %>% 
-  write(file = './nwmRetro_grandCanyon.gpkg')
-})
-
-user  system    elapsed 
-1.009   0.153   3.670  
-
+  findNHD() %>% 
+  add_retro()
 ```
 
 ```r
@@ -59,8 +53,3 @@ names(obj)
 <img src="man/figures/monthly.png" width=500 />
 <br>
 
-
-To Do:
-
-- [X]  Add data files
-- [X] Create a join function that attacahes data files to 'find' files before writing
