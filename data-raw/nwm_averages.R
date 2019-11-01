@@ -38,6 +38,10 @@ nwm_averages <- nwm_retro %>%
   select(-lat, -long, -tz) %>%
   mutate_all(funs(as.integer(.)))
 
-
+save(nwm_averages, file = "./data-raw/nwm_average.rda", compress = "xz")
 
 devtools::use_data(nwm_averages, compress = "xz", internal = TRUE)
+
+
+load("./data-raw/nwm_average.rda")
+

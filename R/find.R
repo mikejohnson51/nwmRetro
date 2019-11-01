@@ -1,81 +1,95 @@
-#' @title Find Spatial NHD or WBD data
-#' @description returns a spatail sub set of the NHD of WBD for an input spatial object using the CIDA Web Coverage Services
-#' @param AOI a Spatial Object
-#' @param type the WBD or nhdplus object to return. Options include:
+#' @title Find National Hydrography River Networks
+#' @description
+#' \code{findNHD} returns a \code{SpatialLinesDataframe} of all NHDFlowlines reaches within an AOI.
+#' Data comes from the USGS CIDA server and contain 90 attributes, perhaps most notably:
 #' \itemize{
-#' \item HUC08
-#' \item HUC12
-#' \item flowlines
-#' \item catchments
-#' \item waterbodies
+#' \item 'comid'   : \code{integer}  Integer value that uniquely identifies the occurrence of each feature in the NHD
+#' \item 'reachcode'   : \code{character}  Unique identifier for a ‘reach’. The first eight numbers are the WBD_HUC8
+#' \item 'fdate': \code{POSITct}  Date of last feature modification
+#' \item 'gnis_id'   : \code{character}    Unique identifier assigned by GNIS
+#' \item 'gnis_name'   : \code{character}    Proper name, term, or expression by which a particular geographic entity is known
+#' \item 'lengthkm'    : \code{numeric}    Length of linear feature based on Albers Equal Area
+#' \item 'areasqkm'    : \code{numeric}    Area of areal feature based on Albers Equal Area,
+#' \item 'flowdir'   : \code{character}     Direction of flow relative to coordinate order.
+#' \item 'wbareacomi'   : \code{integer}  The COMID of the waterbody through which the flowline flows.
+#' \item 'ftype': \code{character}  unique identifier of a feature type
 #' }
-#' @param spatial return `sp` (default) if \code{FALSE} return `sf`
-#' @return a \code{Spatial} object
+#' @param AOI  A Spatial* or simple features geometry, can be piped from \link[AOI]{getAOI}
+#' @param comid Search for NHD features by COMID
+#' @param nwis Search for NHD features by NWIS ID
+#' @param streamorder filter returned NHD by steamorder. Returns are feature of input and higher.
+#' @param name Seach for NHD by GNIS name
+#' @return a list() of minimum length 2: AOI and nhd
+#' @examples
+#' \dontrun{
+#' nhd  = getAOI(clip = list("Tuscaloosa, AL", 10, 10)) %>% findNHD()
+#' }
+#' @importFrom  httr RETRY
+#' @importFrom jsonlite fromJSON
+#' @importFrom utils unzip
 #' @author Mike Johnson
 #' @export
 
+findNHD = function(AOI = NULL, comid = NULL, nwis = NULL, streamorder = NULL, name = NULL) {
 
-find = function(AOI, type = "flowlines", spatial = FALSE){
+  if(!checkClass(AOI, "list")){AOI = list(AOI = AOI)}
 
-df = data.frame(server = c(rep("WBD", 2),
-                           rep("nhdplus", 3)),
+  substrRight <- function(x, n){ substr(x, nchar(x)-n+1, nchar(x)) }
 
-                call   = c("huc08",
-                           "huc12",
-                           "nhdflowline_network",
-                           "catchmentsp",
-                           "nhdwaterbody"),
+  f = NULL
+  df = NULL
 
-                type   = c("HUC8",
-                           "HUC12",
-                           "flowlines",
-                           "catchments",
-                           "waterbodys"),
+  if(!is.null(nwis)){
+    url = paste0( "https://cida.usgs.gov/nldi/nwissite/", 'USGS-', nwis)
+    mat = NULL
+    for(i in 1:length(url)){
+      c <- rawToChar(httr::RETRY("GET", url[i], times = 10, pause_cap = 240)$content)
+      f.comid = jsonlite::fromJSON(c, simplifyVector = TRUE)
+      comid = f.comid$features$properties$comid
+      mat = rbind(mat, c(substrRight(url[i], 8), comid))
+    }
 
-                stringsAsFactors = F)
-
-bb = AOI@bbox
-
-if(!(type %in% df$type)){stop("Type not found.")}
-
-server = df$server[which(df$type == type)]
-call   = df$call[which(df$type == type)]
-
-url_base <- paste0("https://cida.usgs.gov/nwc/geoserver/",
-                   server,
-                   "/ows",
-                   "?service=WFS",
-                   "&version=1.0.0",
-                   "&request=GetFeature",
-                   "&typeName=",
-                   server, ":", call,
-                   "&outputFormat=application%2Fjson",
-                   "&srsName=EPSG:4269",
-                   "&bbox=",
-                    paste(bb[2,1], bb[1,1],
-                    bb[2,2], bb[1,2],
-                    "urn:ogc:def:crs:EPSG:4269", sep = ","))
-
-sl = tryCatch({sf::st_zm(sf::read_sf(url_base))},
-              error = function(e){
-                return(NULL)
-              }, warning = function(w){
-                return(NULL)
-              }
-)
-
-if(any(is.null(sl), nrow(sl) ==0)) {
-  sl = NULL
-  warning("O features found in this AOI.")} else {
-  if(spatial) {sl = sf::as_Spatial(sl)}
+    df = data.frame(nwis = mat[,1], comid = mat[,2], stringsAsFactors = FALSE)
+    comid = df$comid
   }
 
 
-`%+%` = crayon::`%+%`
+  if(!is.null(streamorder)){
 
-cat(crayon::white("Returned object contains: ") %+% crayon::green(paste(length(sl), server,  type, '\n')))
+    f = paste0('<ogc:And>',
+               '<ogc:PropertyIsGreaterThan>',
+               '<ogc:PropertyName>streamorde</ogc:PropertyName>',
+               '<ogc:Literal>',streamorder - 1,'</ogc:Literal>',
+               '</ogc:PropertyIsGreaterThan>')
+  }
 
-return(sl)
+  if(!is.null(comid)){
+    siteText <- ""
 
+    for(i in comid){
+      siteText <- paste0(siteText,'<ogc:PropertyIsEqualTo  matchCase="true">',
+                         '<ogc:PropertyName>comid</ogc:PropertyName>',
+                         '<ogc:Literal>',i,'</ogc:Literal>',
+                         '</ogc:PropertyIsEqualTo>')}
+
+    f = paste0('<ogc:Or>', siteText, '</ogc:Or>')
+  }
+
+  if(!is.null(name)){
+    f = paste0('<ogc:PropertyIsEqualTo matchCase="true">',
+               '<ogc:PropertyName>gnis_name</ogc:PropertyName>',
+               '<ogc:Literal>',name,'</ogc:Literal>',
+               '</ogc:PropertyIsEqualTo>')
+  }
+
+  sl = query_cida(AOI = AOI$AOI, type = 'nhd', filter  = f)
+
+  if(!is.null(df)) { sl = merge(sl, df, "comid")}
+
+  if(!is.null(sl)){
+    AOI[["nhd"]] <- sl
+    return.what(paste(NROW(sl), "nhd flowlines"))
+  }
+
+  return(AOI$nhd)
 }
-

@@ -9,11 +9,11 @@
 #' }
 #' @param stream_name A character string specifing what stream to graph (should match a
 #' valid `gnis_name` in `obj`). \code{NA} (default) will plot all reaches.
-#' @return a ggplot graph
-#' @examples show(obj = obj)
-#' @examples show(obj = obj, stream_name = "Fountain Creek", type = "seasonal")
+#' @return a ggplot
+#' @importFrom ggplot2 ggplot geom_line xlab ylab scale_colour_brewer
+#' @importFrom stats reshape
 #' @export
-#' @author Pat Johnson
+
 
 
 show <- function(obj = NULL, type = "annual", stream_name = NA) {

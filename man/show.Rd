@@ -20,15 +20,8 @@ show(obj = NULL, type = "annual", stream_name = NA)
 valid `gnis_name` in `obj`). \code{NA} (default) will plot all reaches.}
 }
 \value{
-a ggplot graph
+a ggplot
 }
 \description{
 Returns a visualization of the resulting object from \code{nwmRetro::join()}
-}
-\examples{
-show(obj = obj)
-show(obj = obj, stream_name = "Fountain Creek", type = "seasonal")
-}
-\author{
-Pat Johnson
 }

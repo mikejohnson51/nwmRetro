@@ -1,17 +1,23 @@
 #' @title Join nwmRetro data to NHD object
 #' @description Joins the retrospective averages to an input NHD object and computes the seasoal, annual and monthly averages.
 #' @param obj a NHD object with a COMID attribute
+#' @param comid a NHD COMID
 #' @return a simple features (sf) object
 #' @export
-#' @author Mike Johnson and Pat Johnson
+#' @importFrom dplyr mutate_at filter mutate select
+#' @importFrom crayon cyan
 
-join = function(obj = NULL){
 
-  sp = any(grep("Spatial", class(obj)))
+add_retro = function(obj = NULL, comid = NULL){
+
+  if(is.null(comid)){
+
+    sp = any(grep("Spatial", class(obj)))
 
   if(sp) { obj = sf::st_as_sf(obj)}
-
+  names(obj) = tolower(names(obj))
   ids = obj$comid
+  } else { ids = comid }
 
   if(is.null(ids)){stop("Input object doesn't contain COMID values")}
 
@@ -32,9 +38,7 @@ join = function(obj = NULL){
   # Add summary statistics
   for (season in names(seasons)) {
     months = eval(parse(text = paste0('seasons$', season)))
-    retro <- retro %>%
-      mutate(!!season := rowSums(select(., one_of(months)), na.rm = TRUE)) %>%
-      mutate_at(vars(season), round, 2)
+    retro[[season]] =  rowMeans(retro[,names(retro) %in% months])
   }
 
   # Add timezone name and timezone offset
@@ -43,13 +47,16 @@ join = function(obj = NULL){
     mutate(offset = timezones[tz_index, 2]) %>%
     select(-tz_index)
 
+  if(!is.null(comid)){
+   return(retro)
+  } else {
+
   obj.new  = merge(obj, retro, by.x = "comid", by.y = 'COMID', all.x = TRUE)
 
   cat(crayon::cyan("NWM retro and NHD merged successful!\n"))
 
-  if(sp){ obj.new = sf::as_Spatial(obj.new)}
-
   return(obj.new)
+  }
 
 }
 
