@@ -58,6 +58,6 @@ add_retro = function(obj = NULL, comid = NULL){
   return(obj.new)
   }
 
-}
+Ò}
 
 
